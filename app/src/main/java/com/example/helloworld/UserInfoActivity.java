@@ -24,6 +24,7 @@ public class UserInfoActivity extends AppCompatActivity {
         etHeight = findViewById(R.id.etHeight);
         rgGender = findViewById(R.id.rgGender);
         btnSave = findViewById(R.id.btnSave);
+        loadUserInfo();
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +57,28 @@ public class UserInfoActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    private void loadUserInfo() {
+        SharedPreferences pref = getSharedPreferences("UserInfo", MODE_PRIVATE);
+
+        String name = pref.getString("name", "");
+        String age = pref.getString("age", "");
+        String weight = pref.getString("weight", "");
+        String height = pref.getString("height", "");
+        String gender = pref.getString("gender", "");
+
+        etName.setText(name);
+        etAge.setText(age);
+        etWeight.setText(weight);
+        etHeight.setText(height);
+
+        if (gender.equals("Male")){
+            rgGender.check(R.id.rbMale);
+        } else if (gender.equals("Female")){
+            rgGender.check(R.id.rbFemale);
+        }
+
 
     }
 
