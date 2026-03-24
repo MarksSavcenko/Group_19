@@ -1,20 +1,14 @@
 package com.example.helloworld.domain;
 
-/**
- * Handles standard drink calculation logic.
-
- */
+// Handles standard drink calculation logic
 public class DrinkCalculator {
 
     // Easy to change later — different countries use different values (e.g. 14g in the US)
     public static final double GRAMS_PER_STANDARD_DRINK = 10.0;
     private static final double ETHANOL_DENSITY = 0.789;
 
-    /**
-     * Calculates how many standard drinks a given volume and ABV equates to.
-     *
 
-     */
+    //Calculates how many standard drinks a given volume and ABV equates to.
     public static double calculate(double volumeMl, double abv) {
         if (volumeMl <= 0) {
             throw new IllegalArgumentException("Volume must be greater than zero");

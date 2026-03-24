@@ -5,12 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Provides data about which dates were "nights out".
- *
- * Currently uses mock data stored in memory.
 
- */
+ //Provides data about which dates were "nights out".
+ //Currently uses mock data stored in memory.
+
 public class NightOutRepository {
 
     // Mock data — a set of date strings the user "went out"
@@ -25,10 +23,7 @@ public class NightOutRepository {
             "2026-02-22"
     ));
 
-    /**
-     * Returns all nights out for the given month and year.
-
-     */
+    // Returns all nights out for the given month and year.
     public Set<Integer> getNightsOutForMonth(int year, int month) {
         String prefix = String.format("%04d-%02d-", year, month);
         Set<Integer> days = new HashSet<>();
@@ -42,10 +37,8 @@ public class NightOutRepository {
         return days;
     }
 
-    /**
-     * Checks if a specific date was a night out.
-     *
-     */
+
+     //Checks if a specific date was a night out.
     public boolean isNightOut(int year, int month, int day) {
         String dateStr = String.format("%04d-%02d-%02d", year, month, day);
         return nightsOut.contains(dateStr);
