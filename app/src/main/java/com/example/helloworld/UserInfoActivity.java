@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class UserInfoActivity extends AppCompatActivity {
     EditText etName, etAge, etWeight, etHeight;
     RadioGroup rgGender;
-    Button btnSave;
+    Button btnSave, btnEdit;
+    TextView detailStatus;
     @Override
     protected void onCreate(Bundle savedinstanceState){
         super.onCreate(savedinstanceState);
@@ -24,7 +26,20 @@ public class UserInfoActivity extends AppCompatActivity {
         etHeight = findViewById(R.id.etHeight);
         rgGender = findViewById(R.id.rgGender);
         btnSave = findViewById(R.id.btnSave);
+        btnEdit = findViewById(R.id.btnEdit);
+        detailStatus = findViewById(R.id.detailStatus);
         loadUserInfo();
+        SharedPreferences pref = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        if(!pref.getString("name","").isEmpty()){
+            setFieldEnabled(false);
+            btnSave.setEnabled(false);
+            detailStatus.setText("Saved");
+        } else{
+            setFieldEnabled(true);
+            btnSave.setEnabled(true);
+            detailStatus.setText("Edit");
+        }
+
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,15 +68,40 @@ public class UserInfoActivity extends AppCompatActivity {
                 editor.apply();
 
                 Toast.makeText(UserInfoActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                setFieldEnabled(false);
+                btnSave.setEnabled(false);
+                detailStatus.setText("Saved");
 
+            }
 
+        });
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFieldEnabled(true);
+                btnSave.setEnabled(true);
+                detailStatus.setText("Edit");
             }
         });
 
     }
+    private void setFieldEnabled(boolean enabled){
+        etName.setEnabled(enabled);
+        etAge.setEnabled(enabled);
+        etWeight.setEnabled(enabled);
+        etHeight.setEnabled(enabled);
+
+        for(int i = 0; i< rgGender.getChildCount(); i++) {
+            rgGender.getChildAt(i).setEnabled(enabled);
+        }
+    }
     private void loadUserInfo() {
         SharedPreferences pref = getSharedPreferences("UserInfo", MODE_PRIVATE);
-
+       /**
+        if(!pref.getString("name","").isEmpty()){
+            setFieldEnabled(false);
+        }
+        */
         String name = pref.getString("name", "");
         String age = pref.getString("age", "");
         String weight = pref.getString("weight", "");
