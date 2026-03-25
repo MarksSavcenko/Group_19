@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:padding="20dp">
     <TextView
+        android:id = "@+id/tUserInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=" User Info"
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         android:text="Calculate BAC" />
     <TextView
+        android:id = "@+id/tResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text = "BAC Result"

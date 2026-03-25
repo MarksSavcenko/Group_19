@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         Button btnUserInfo = findViewById(R.id.btnUserInfo);
+        Button btnBacCalculator = findViewById(R.id.btnBacCalculator);
 
         btnUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -27,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnBacCalculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BacCalculator.class);
+                startActivity(intent);
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
