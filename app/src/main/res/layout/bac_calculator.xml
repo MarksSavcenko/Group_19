@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp">
-    <TextView
-        android:id = "@+id/tUserInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=" User Info"
-        android:textSize="18sp"
-        android:paddingBottom="12dp" />
     <EditText
         android:id = "@+id/etHours"
         android:layout_width="match_parent"
