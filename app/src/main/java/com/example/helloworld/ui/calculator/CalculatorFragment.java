@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,16 +14,29 @@ import androidx.fragment.app.Fragment;
 import com.example.helloworld.databinding.FragmentCalculatorBinding;
 import com.example.helloworld.domain.DrinkCalculator;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class    CalculatorFragment extends Fragment {
+public class CalculatorFragment extends Fragment {
 
     private FragmentCalculatorBinding binding;
 
+    // Data structure to hold our drink presets
+    private static class DrinkPreset {
+        String name;
+        double volumeMl;
+        double abv;
+
+        DrinkPreset(String name, double volumeMl, double abv) {
+            this.name = name;
+            this.volumeMl = volumeMl;
+            this.abv = abv;
+        }
+    }
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCalculatorBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -29,56 +44,36 @@ public class    CalculatorFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        binding.calculateButton.setOnClickListener(v -> onCalculateClicked());
+        setupDrinkButtons();
     }
 
-    private void onCalculateClicked() {
-        String volumeText = binding.volumeInput.getText().toString().trim();
-        String abvText = binding.abvInput.getText().toString().trim();
+    private void setupDrinkButtons() {
+        List<DrinkPreset> presets = new ArrayList<>();
+        // Using Irish standard sizes: Spirits (35.5ml), Wine (150ml), Beer/Pint (568ml)
+        presets.add(new DrinkPreset("Vodka (35.5ml)", 35.5, 40.0));
+        presets.add(new DrinkPreset("Gin (35.5ml)", 35.5, 43.0));
+        presets.add(new DrinkPreset("Whiskey (35.5ml)", 35.5, 40.0));
+        presets.add(new DrinkPreset("Tequila (35.5ml)", 35.5, 50.5));
+        presets.add(new DrinkPreset("Liqueur (35.5ml)", 35.5, 15.0));
+        presets.add(new DrinkPreset("Fortified Wine (75ml)", 75.0, 20.0));
+        presets.add(new DrinkPreset("Wine (150ml)", 150.0, 15.0));
+        presets.add(new DrinkPreset("Beer (Pint)", 568.0, 5.0));
+        presets.add(new DrinkPreset("Malt Beverage", 330.0, 15.0));
 
-
-        if (volumeText.isEmpty() || abvText.isEmpty()) {
-            showError("Please fill in both fields.");
-            return;
+        // Assuming you have a LinearLayout with id 'buttonContainer' in your XML
+        // Otherwise, you can inject them into binding.getRoot() or a specific layout
+        for (DrinkPreset drink : presets) {
+            Button btn = new Button(getContext());
+            btn.setText(drink.name);
+            btn.setOnClickListener(v -> {
+                double result = DrinkCalculator.calculate(drink.volumeMl, drink.abv);
+                showResult(drink.name + " is " + result + " standard Irish drinks.");
+            });
+            binding.buttonContainer.addView(btn);
         }
-
-
-        double volume;
-        double abv;
-        try {
-            volume = Double.parseDouble(volumeText);
-            abv = Double.parseDouble(abvText);
-        } catch (NumberFormatException e) {
-            showError("Please enter valid numbers.");
-            return;
-        }
-
-
-        if (volume <= 0) {
-            showError("Volume must be greater than zero.");
-            return;
-        }
-        if (abv <= 0) {
-            showError("ABV must be greater than zero.");
-            return;
-        }
-        if (abv > 100) {
-            showError("ABV cannot be more than 100%.");
-            return;
-        }
-
-
-        double result = DrinkCalculator.calculate(volume, abv);
-        showResult("That's approximately " + result + " standard drink(s).");
     }
 
     private void showResult(String message) {
-        binding.resultCard.setVisibility(View.VISIBLE);
-        binding.resultText.setText(message);
-    }
-
-    private void showError(String message) {
         binding.resultCard.setVisibility(View.VISIBLE);
         binding.resultText.setText(message);
     }

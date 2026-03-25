@@ -11,21 +11,39 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Standard Drink Calculator"
+            android:text="Irish Standard Drink Calculator"
             android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginBottom="24dp" />
 
-        <!-- Volume input -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap a drink to calculate:"
+            android:layout_marginBottom="8dp"
+            android:textStyle="italic" />
+
+        <LinearLayout
+            android:id="@+id/buttonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginBottom="24dp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Volume (ml)"
+            android:hint="Custom Volume (ml)"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -39,11 +57,10 @@
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
-        <!-- ABV input -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Alcohol by Volume (%)"
+            android:hint="Custom ABV (%)"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -57,18 +74,16 @@
             android:layout_width="match_parent"
             android:layout_height="24dp" />
 
-        <!-- Calculate button -->
         <Button
             android:id="@+id/calculate_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Calculate" />
+            android:text="Calculate Custom" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="24dp" />
 
-        <!-- Result card (hidden until calculation) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/result_card"
             android:layout_width="match_parent"
@@ -82,7 +97,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
