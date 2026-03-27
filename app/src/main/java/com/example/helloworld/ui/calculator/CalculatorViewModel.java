@@ -26,6 +26,7 @@ public class CalculatorViewModel extends ViewModel {
         _totalDrinks.setValue(updatedTotal);
     }
 
+
     public void resetSession() {
         _totalDrinks.setValue(0.0);
     }
