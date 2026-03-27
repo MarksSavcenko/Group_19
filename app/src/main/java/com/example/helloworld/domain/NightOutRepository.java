@@ -1,9 +1,10 @@
 package com.example.helloworld.domain;
 
-import java.util.Arrays;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
  //Provides data about which dates were "nights out".
@@ -12,19 +13,28 @@ import java.util.stream.Collectors;
 public class NightOutRepository {
 
     // Mock data — a set of date strings the user "went out"
-    private final Set<String> nightsOut = new HashSet<>(Arrays.asList(
-            "2026-03-01",
-            "2026-03-07",
-            "2026-03-14",
-            "2026-03-15",
-            "2026-03-20",
-            "2026-02-05",
-            "2026-02-14",
-            "2026-02-22"
-    ));
+    private final SharedPreferences prefs;
+    private final Set<String> nightsOut;
 
-    // Returns all nights out for the given month and year.
+    public NightOutRepository(Context context) {
+        prefs = context.getSharedPreferences("nights_out", Context.MODE_PRIVATE);
+        nightsOut = new HashSet<>(prefs.getStringSet("dates", new HashSet<>()));
+    }
+
+    public void addNightOut(int year, int month, int day) {
+        String dateStr = String.format("%04d-%02d-%02d", year, month, day);
+        nightsOut.add(dateStr);
+        prefs.edit().putStringSet("dates", nightsOut).apply();
+    }
+
+    public void removeNightOut(int year, int month, int day) {
+        String dateStr = String.format("%04d-%02d-%02d", year, month, day);
+        nightsOut.remove(dateStr);
+        prefs.edit().putStringSet("dates", nightsOut).apply();
+    }
+
     public Set<Integer> getNightsOutForMonth(int year, int month) {
+
         String prefix = String.format("%04d-%02d-", year, month);
         Set<Integer> days = new HashSet<>();
         for (String date : nightsOut) {
