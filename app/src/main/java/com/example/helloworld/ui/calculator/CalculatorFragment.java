@@ -33,6 +33,8 @@ public class CalculatorFragment extends Fragment {
         }
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,15 +42,30 @@ public class CalculatorFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private CalculatorViewModel viewModel;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewModel = new androidx.lifecycle.ViewModelProvider(this).get(CalculatorViewModel.class);
+
         // 1. Setup the Preset Buttons
         setupDrinkButtons();
 
-        // 2. Fix the Manual Calculate Button
+        // 2. Manual Calculate Button
         binding.calculateButton.setOnClickListener(v -> onManualCalculateClicked());
+
+        // 3. Reset Button logic
+        binding.resetTotalButton.setOnClickListener(v -> {
+            viewModel.resetSession();
+            showResult("Session reset to 0.");
+        });
+
+        // 4. Observe the total (using the ID from your XML: total_count_text)
+        viewModel.getTotalDrinks().observe(getViewLifecycleOwner(), total -> {
+            binding.totalCountText.setText(String.valueOf(total));
+        });
     }
 
     private void setupDrinkButtons() {
@@ -75,8 +92,12 @@ public class CalculatorFragment extends Fragment {
             btn.setLayoutParams(params);
 
             btn.setOnClickListener(v -> {
+                //Update the total in the ViewModel
+                viewModel.addDrink(drink.volumeMl, drink.abv);
+
+                // Can still show the individual result
                 double result = DrinkCalculator.calculate(drink.volumeMl, drink.abv);
-                showResult(drink.name + " is " + result + " standard Irish drinks.");
+                showResult(drink.name + " added! (" + result + " drinks)");
             });
             binding.buttonContainer.addView(btn);
         }
@@ -85,6 +106,7 @@ public class CalculatorFragment extends Fragment {
     private void onManualCalculateClicked() {
         String volumeText = binding.volumeInput.getText().toString().trim();
         String abvText = binding.abvInput.getText().toString().trim();
+
 
         if (volumeText.isEmpty() || abvText.isEmpty()) {
             showResult("Please fill in both fields.");
@@ -101,7 +123,8 @@ public class CalculatorFragment extends Fragment {
             }
 
             double result = DrinkCalculator.calculate(volume, abv);
-            showResult("Custom drink: " + result + " standard drinks.");
+            viewModel.addDrink(volume, abv);
+            showResult("Added " + result + " standard drinks.");
         } catch (NumberFormatException e) {
             showResult("Invalid number format.");
         }
