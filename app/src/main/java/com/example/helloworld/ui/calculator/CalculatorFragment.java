@@ -66,6 +66,19 @@ public class CalculatorFragment extends Fragment {
         viewModel.getTotalDrinks().observe(getViewLifecycleOwner(), total -> {
             binding.totalCountText.setText(String.valueOf(total));
         });
+        viewModel.getDrinkCount().observe(getViewLifecycleOwner(), count -> {
+            if (count > 0 && count % 2 == 0) {
+                showWaterReminder();
+            }
+        });
+    }
+
+    private void showWaterReminder() {
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Hydration Break! 💧")
+                .setMessage("You've had 2 drinks since your last reminder. It's a good idea to have a glass of water now.")
+                .setPositiveButton("I will!", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void setupDrinkButtons() {
