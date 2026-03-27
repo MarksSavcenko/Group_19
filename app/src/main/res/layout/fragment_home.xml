@@ -35,11 +35,12 @@
         android:text="User Details" />
 
     <Button
-        android:id="@+id/btn_feature5"
+        android:id="@+id/btn_GoalSet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:text="Feature 5" />
+        android:text="Set Drinking Goals" />
+    <
 
     <Button
         android:id="@+id/btn_feature6"
