@@ -21,18 +21,18 @@
         android:text="Nights Out Calendar" />
 
     <Button
-        android:id="@+id/btn_feature3"
+        android:id="@+id/btn_BacCalculator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:text="Feature 3" />
+        android:text="BAC Calculator" />
 
     <Button
-        android:id="@+id/btn_feature4"
+        android:id="@+id/btn_UserInfoActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:text="Feature 4" />
+        android:text="User Details" />
 
     <Button
         android:id="@+id/btn_feature5"
@@ -40,12 +40,5 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="Feature 5" />
-
-    <Button
-        android:id="@+id/btn_feature6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Feature 6" />
 
 </LinearLayout>
