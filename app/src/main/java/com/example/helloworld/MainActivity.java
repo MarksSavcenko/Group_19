@@ -9,7 +9,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.helloworld.ui.calculator.CalculatorFragment;
-
+import com.example.helloworld.ui.goals.GoalsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,5 +31,22 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.main_container, new CalculatorFragment())
                     .commit();
         }
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_calculator) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_container, new CalculatorFragment())
+                        .commit();
+                return true;
+            } else if (id == R.id.nav_goals) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_container, new GoalsFragment())
+                        .commit();
+                return true;
+            }
+            return false;
+        });
     }
 }
