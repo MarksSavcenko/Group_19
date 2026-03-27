@@ -1,4 +1,4 @@
-package com.example.helloworld;
+package com.example.helloworld.domain;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.helloworld.R;
 
 public class BacCalculator extends AppCompatActivity {
     TextView  tResult;

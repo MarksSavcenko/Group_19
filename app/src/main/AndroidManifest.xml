@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelloWorld"
         tools:targetApi="31">
-        <activity android:name=".UserInfoActivity" />
-        <activity android:name=".BacCalculator" />
+        <activity android:name=".domain.UserInfoActivity" />
+        <activity android:name=".domain.BacCalculator" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -9,8 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
+import android.content.Intent;
 import com.example.helloworld.R;
+import com.example.helloworld.domain.BacCalculator;
+
+import com.example.helloworld.domain.UserInfoActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -31,5 +34,20 @@ public class HomeFragment extends Fragment {
 
         view.findViewById(R.id.btn_calendar).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.calendarFragment));
+        view.findViewById(R.id.btn_UserInfoActivity).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+            startActivity(intent);
+        });
+        view.findViewById(R.id.btn_BacCalculator).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), BacCalculator.class);
+            startActivity(intent);
+        });
+
+
+
+
+
     }
-}
+    }
+
+//}
