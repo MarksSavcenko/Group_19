@@ -34,7 +34,7 @@ public class NightOutRepository {
     }
 
     public Set<Integer> getNightsOutForMonth(int year, int month) {
-    public Set<Integer> getNightsOutForMonth(int year, int month) {
+
         String prefix = String.format("%04d-%02d-", year, month);
         Set<Integer> days = new HashSet<>();
         for (String date : nightsOut) {
