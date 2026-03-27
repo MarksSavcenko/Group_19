@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/calculatorFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/calculatorFragment"
@@ -16,5 +16,11 @@
         android:name="com.example.helloworld.ui.calendar.CalendarFragment"
         android:label="Nights Out"
         tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.helloworld.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
 
 </navigation>
