@@ -38,6 +38,10 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), UserInfoActivity.class);
             startActivity(intent);
         });
+        view.findViewById(R.id.btn_Goals).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), com.example.helloworld.domain.GoalsActivity.class);
+            startActivity(intent);
+        });
         view.findViewById(R.id.btn_BacCalculator).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), BacCalculator.class);
             startActivity(intent);

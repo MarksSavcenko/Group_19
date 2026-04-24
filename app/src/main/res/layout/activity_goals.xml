@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Your Goals"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Period selector -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Goal Period"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rgPeriod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/rbDaily"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Daily" />
+
+            <RadioButton
+                android:id="@+id/rbWeekly"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Weekly" />
+
+            <RadioButton
+                android:id="@+id/rbMonthly"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Monthly" />
+        </RadioGroup>
+
+        <!-- Drinks goal -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max number of drinks"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etGoalDrinks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="e.g. 4"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Spending goal -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max money spent (€)"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etGoalSpending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="e.g. 30"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Calories goal -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max calories from drinks (kcal)"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etGoalCalories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="e.g. 500"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Save button -->
+        <Button
+            android:id="@+id/btnSaveGoals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Goals"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Current goals summary -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current goals"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvCurrentGoals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No goals set yet."
+            android:textSize="14sp"
+            android:padding="12dp"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>
