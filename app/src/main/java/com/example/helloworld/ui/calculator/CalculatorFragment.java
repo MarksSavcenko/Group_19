@@ -24,8 +24,10 @@ public class CalculatorFragment extends Fragment {
     private FragmentCalculatorBinding binding;
     private CalculatorViewModel viewModel;
 
-    // Tracks whether the goal warning has already been shown this session
-    private boolean drinkGoalWarningShown = false;
+    // Tracks whether each goal warning has already been shown this session
+    private boolean dailyGoalWarningShown   = false;
+    private boolean weeklyGoalWarningShown  = false;
+    private boolean monthlyGoalWarningShown = false;
 
     // Holds the details for each preset drink button
     private static class DrinkPreset {
@@ -62,14 +64,16 @@ public class CalculatorFragment extends Fragment {
 
         binding.resetTotalButton.setOnClickListener(v -> {
             viewModel.resetSession();
-            drinkGoalWarningShown = false; // allow the warning to show again after a reset
+            dailyGoalWarningShown   = false;
+            weeklyGoalWarningShown  = false;
+            monthlyGoalWarningShown = false;
             showResult("Session reset to 0.");
         });
 
-        // Update the drinks counter on screen whenever it changes
+        // Update the drinks counter and check all goals whenever the total changes
         viewModel.getTotalDrinks().observe(getViewLifecycleOwner(), total -> {
             binding.totalCountText.setText(String.valueOf(total));
-            checkDrinkGoal(total);
+            checkAllDrinkGoals(total);
         });
 
         // Update the calorie counter on screen whenever it changes
@@ -82,23 +86,42 @@ public class CalculatorFragment extends Fragment {
         });
     }
 
-    // Checks if the user has gone over their daily drink goal and shows a warning if so
-    private void checkDrinkGoal(double totalDrinks) {
-        if (drinkGoalWarningShown) return;
-
+    // Checks all three goals against the current session total — same logic for each
+    private void checkAllDrinkGoals(double sessionTotal) {
         SharedPreferences prefs = requireContext().getSharedPreferences("GoalsPrefs", android.content.Context.MODE_PRIVATE);
-        float dailyDrinkGoal = prefs.getFloat("Daily_drinks", -1f);
 
-        if (dailyDrinkGoal >= 0 && totalDrinks > dailyDrinkGoal) {
-            drinkGoalWarningShown = true;
-            showDrinkGoalWarning(dailyDrinkGoal, totalDrinks);
+        if (!dailyGoalWarningShown) {
+            float dailyGoal = prefs.getFloat("Daily_drinks", -1f);
+            if (dailyGoal >= 0 && sessionTotal > dailyGoal) {
+                dailyGoalWarningShown = true;
+                showGoalWarning("Daily", dailyGoal, sessionTotal);
+            }
+        }
+
+        if (!weeklyGoalWarningShown) {
+            float weeklyGoal = prefs.getFloat("Weekly_drinks", -1f);
+            if (weeklyGoal >= 0 && sessionTotal > weeklyGoal) {
+                weeklyGoalWarningShown = true;
+                showGoalWarning("Weekly", weeklyGoal, sessionTotal);
+            }
+        }
+
+        if (!monthlyGoalWarningShown) {
+            float monthlyGoal = prefs.getFloat("Monthly_drinks", -1f);
+            if (monthlyGoal >= 0 && sessionTotal > monthlyGoal) {
+                monthlyGoalWarningShown = true;
+                showGoalWarning("Monthly", monthlyGoal, sessionTotal);
+            }
         }
     }
 
-    private void showDrinkGoalWarning(float goal, double current) {
+    // Shows the goal exceeded pop-up — same style as the water reminder
+    private void showGoalWarning(String period, float goal, double current) {
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Daily Drink Goal Exceeded! 🚨")
-                .setMessage("You've had " + current + " drinks, which is over your daily goal of " + (int) goal + ". Consider slowing down and having some water.")
+                .setTitle(period + " Drink Goal Exceeded! 🚨")
+                .setMessage("You've had " + current + " drinks this session, which is over your "
+                        + period.toLowerCase() + " goal of " + (int) goal
+                        + ". Consider slowing down and having some water.")
                 .setPositiveButton("Got it", (dialog, which) -> dialog.dismiss())
                 .show();
     }
@@ -107,7 +130,6 @@ public class CalculatorFragment extends Fragment {
     private void buildDrinkPresetButtons() {
         List<DrinkPreset> presets = new ArrayList<>();
 
-        // Irish standard sizes — carb calories sourced from avg nutritional data
         presets.add(new DrinkPreset("Vodka (35.5ml)",          35.5,  40.0,  0));
         presets.add(new DrinkPreset("Gin (35.5ml)",            35.5,  43.0,  0));
         presets.add(new DrinkPreset("Whiskey (35.5ml)",        35.5,  40.0,  0));
