@@ -25,6 +25,7 @@
                 android:padding="16dp"
                 android:gravity="center">
 
+                <!-- Standard drinks total -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,13 +42,40 @@
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
+                <!-- Divider line between drinks count and spending -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#33FFFFFF"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Spending row -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spent Tonight"
+                    android:textColor="#CCffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/total_spending_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="€0.00"
+                    android:textColor="@android:color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/reset_total_button"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Reset Tracker"
                     android:textColor="@android:color/white" />
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

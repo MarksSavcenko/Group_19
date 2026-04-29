@@ -7,20 +7,23 @@ import com.example.helloworld.domain.DrinkCalculator;
 
 public class CalculatorViewModel extends ViewModel {
 
-    // Tracks the total number of standard drinks in the current session
-    private final MutableLiveData<Double> _totalDrinks = new MutableLiveData<>(0.0);
-    private final MutableLiveData<Integer> _drinkCount = new MutableLiveData<>(0);
-    public LiveData<Double> getTotalDrinks() {
-        return _totalDrinks;
-    }
+    private final MutableLiveData<Double>  _totalDrinks  = new MutableLiveData<>(0.0);
+    private final MutableLiveData<Integer> _drinkCount   = new MutableLiveData<>(0);
 
-    public LiveData<Integer> getDrinkCount() {
-        return _drinkCount;
-    }
+    private final MutableLiveData<Double>  _totalSpending = new MutableLiveData<>(0.0);
 
-    // Method to add a drink to the counter
-    public void addDrink(double volume, double abv) {
+    public LiveData<Double>  getTotalDrinks()   { return _totalDrinks;   }
+    public LiveData<Integer> getDrinkCount()    { return _drinkCount;    }
+    public LiveData<Double>  getTotalSpending() { return _totalSpending; }
 
+    /**
+     * Adds a drink to both the standard-drink total and the spending total.
+     *
+     * @param volume  volume in ml
+     * @param abv     alcohol-by-volume percentage
+     * @param price   price paid in euros (0 = free / unknown, still tracked)
+     */
+    public void addDrink(double volume, double abv, double price) {
         double newAmount = DrinkCalculator.calculate(volume, abv);
         Double currentTotal = _totalDrinks.getValue();
         if (currentTotal == null) currentTotal = 0.0;
@@ -29,10 +32,16 @@ public class CalculatorViewModel extends ViewModel {
         Integer currentCount = _drinkCount.getValue();
         if (currentCount == null) currentCount = 0;
         _drinkCount.setValue(currentCount + 1);
+
+        Double currentSpending = _totalSpending.getValue();
+        if (currentSpending == null) currentSpending = 0.0;
+        _totalSpending.setValue(Math.round((currentSpending + price) * 100.0) / 100.0);
     }
 
-
+    /** Resets all session state — drinks, count, and spending. */
     public void resetSession() {
         _totalDrinks.setValue(0.0);
+        _drinkCount.setValue(0);
+        _totalSpending.setValue(0.0);
     }
 }
