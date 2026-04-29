@@ -1,5 +1,6 @@
 package com.example.helloworld.ui.calculator;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +24,15 @@ public class CalculatorFragment extends Fragment {
     private FragmentCalculatorBinding binding;
     private CalculatorViewModel viewModel;
 
+    // Tracks whether the goal warning has already been shown this session
+    private boolean drinkGoalWarningShown = false;
+
     // Holds the details for each preset drink button
     private static class DrinkPreset {
         String name;
         double volumeMl;
         double abv;
-        int carbCalories; // extra calories from sugars/carbs (beyond alcohol itself)
+        int carbCalories;
 
         DrinkPreset(String name, double volumeMl, double abv, int carbCalories) {
             this.name         = name;
@@ -58,12 +62,15 @@ public class CalculatorFragment extends Fragment {
 
         binding.resetTotalButton.setOnClickListener(v -> {
             viewModel.resetSession();
+            drinkGoalWarningShown = false; // allow the warning to show again after a reset
             showResult("Session reset to 0.");
         });
 
         // Update the drinks counter on screen whenever it changes
-        viewModel.getTotalDrinks().observe(getViewLifecycleOwner(), total ->
-                binding.totalCountText.setText(String.valueOf(total)));
+        viewModel.getTotalDrinks().observe(getViewLifecycleOwner(), total -> {
+            binding.totalCountText.setText(String.valueOf(total));
+            checkDrinkGoal(total);
+        });
 
         // Update the calorie counter on screen whenever it changes
         viewModel.getTotalCalories().observe(getViewLifecycleOwner(), calories ->
@@ -73,6 +80,27 @@ public class CalculatorFragment extends Fragment {
         viewModel.getDrinkCount().observe(getViewLifecycleOwner(), count -> {
             if (count > 0 && count % 2 == 0) showWaterReminder();
         });
+    }
+
+    // Checks if the user has gone over their daily drink goal and shows a warning if so
+    private void checkDrinkGoal(double totalDrinks) {
+        if (drinkGoalWarningShown) return;
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("GoalsPrefs", android.content.Context.MODE_PRIVATE);
+        float dailyDrinkGoal = prefs.getFloat("Daily_drinks", -1f);
+
+        if (dailyDrinkGoal >= 0 && totalDrinks > dailyDrinkGoal) {
+            drinkGoalWarningShown = true;
+            showDrinkGoalWarning(dailyDrinkGoal, totalDrinks);
+        }
+    }
+
+    private void showDrinkGoalWarning(float goal, double current) {
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Daily Drink Goal Exceeded! 🚨")
+                .setMessage("You've had " + current + " drinks, which is over your daily goal of " + (int) goal + ". Consider slowing down and having some water.")
+                .setPositiveButton("Got it", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     // Creates a tap-to-add button for each preset drink
@@ -93,7 +121,6 @@ public class CalculatorFragment extends Fragment {
         for (DrinkPreset drink : presets) {
             Button btn = new Button(getContext());
 
-            // Show estimated calories alongside the drink name
             int estimatedCalories = DrinkCalculator.calculateCalories(drink.volumeMl, drink.abv, drink.carbCalories);
             btn.setText(drink.name + "  (~" + estimatedCalories + " kcal)");
 
@@ -134,7 +161,6 @@ public class CalculatorFragment extends Fragment {
             double standardDrinks = DrinkCalculator.calculate(volume, abv);
             int calories = DrinkCalculator.calculateCalories(volume, abv, 0);
 
-            // Custom drinks have no carb info so we only count alcohol calories
             viewModel.addDrink(volume, abv, 0);
             showResult("Added " + standardDrinks + " standard drinks (~" + calories + " kcal).");
         } catch (NumberFormatException e) {
